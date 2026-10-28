@@ -585,3 +585,48 @@ body.login-body {
   .btn, .btn::after { animation: none !important; }
   .brand h1 .grad { color: var(--accent); }
 }
+
+/* ===================================================== brightness tuning ==
+   Feedback: "ficou muito escuro". Lift the whole palette so it reads rich and
+   deep, not black. These come last, so they win the cascade. */
+
+:root {
+  --bg: #0c1426;
+  --bg-2: #15203b;
+  --panel: rgba(24, 34, 56, 0.80);
+  --stroke: rgba(140, 180, 230, 0.20);
+  --stroke-strong: rgba(140, 180, 230, 0.36);
+}
+
+body.login-body {
+  background:
+    radial-gradient(1200px 760px at 78% -8%, rgba(56, 189, 248, 0.20), transparent 60%),
+    radial-gradient(1000px 680px at 8% 112%, rgba(46, 230, 198, 0.18), transparent 58%),
+    radial-gradient(900px 620px at 50% 50%, rgba(124, 92, 255, 0.12), transparent 62%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+
+.aurora {
+  background:
+    radial-gradient(42% 52% at 20% 30%, rgba(46, 230, 198, 0.36), transparent 60%),
+    radial-gradient(46% 56% at 80% 22%, rgba(56, 189, 248, 0.34), transparent 60%),
+    radial-gradient(52% 52% at 62% 92%, rgba(124, 92, 255, 0.30), transparent 60%),
+    radial-gradient(40% 42% at 8% 82%, rgba(46, 230, 198, 0.24), transparent 60%);
+  filter: blur(30px) saturate(150%) brightness(1.18);
+  opacity: 1;
+}
+
+.grid { opacity: 0.85; }
+
+/* the vignette was doing most of the darkening: soften it a lot */
+.vignette { box-shadow: inset 0 0 170px 16px rgba(0, 0, 0, 0.30); }
+
+/* lighter, more legible glass card */
+.login-card {
+  background: rgba(26, 37, 60, 0.82);
+  border-color: rgba(140, 180, 230, 0.36);
+}
+
+/* a touch more presence on the login canvas nodes is handled in JS; here we
+   just make sure the base page is not pure black behind everything */
+html, body { background: var(--bg); }
