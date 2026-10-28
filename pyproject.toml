@@ -14,8 +14,8 @@ keywords = ["llm", "guardrail", "prompt-injection", "ai-security", "llmops", "de
 
 # The API extra is optional on purpose. The engine imports with zero deps.
 [project.optional-dependencies]
-api = ["fastapi==0.115.6", "uvicorn[standard]==0.34.0"]
-dev = ["pytest==8.3.4", "pytest-cov==6.0.0", "httpx==0.28.1", "ruff==0.8.6", "mypy==1.14.1"]
+api = ["fastapi==0.162.0", "uvicorn[standard]==0.54.0"]
+dev = ["pytest==9.1.1", "pytest-cov==7.1.0", "httpx==0.28.1", "ruff==0.17.2", "mypy==2.4.0"]
 
 [project.scripts]
 shomer = "shomer_gate.__main__:main"
