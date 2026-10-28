@@ -1,49 +1,59 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>shomer-gate · sign in</title>
-  <meta name="description" content="The guardian at the gate. A deterministic guardrail console for LLM traffic." />
+  <title>shomer-gate · entrar</title>
+  <meta name="description" content="O guardião no portão. Console de guardrail determinístico para tráfego de LLM." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232ee6c6'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%2304121a' font-family='monospace'%3E%D7%A9%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
-  <canvas id="neural"></canvas>
+<body class="login-body">
+  <div class="fx" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="grid"></div>
+    <canvas id="neural"></canvas>
+    <div class="vignette"></div>
+  </div>
 
   <main class="login-wrap">
-    <section class="login-card" aria-label="Sign in">
-      <header class="brand">
-        <div class="sigil" aria-hidden="true">ש</div>
-        <div>
-          <h1>shomer-gate <span class="he">שומר</span></h1>
-          <p>The guardian at the gate · LLM guardrail console</p>
-        </div>
-      </header>
+    <section class="card-shell">
+      <div class="scan" aria-hidden="true"></div>
+      <section class="login-card" aria-label="Entrar">
+        <header class="brand">
+          <div class="sigil" aria-hidden="true"><span>ש</span></div>
+          <div>
+            <h1><span class="grad">shomer-gate</span> <span class="he">שומר</span></h1>
+            <p>O guardião no portão · console de guardrail para LLM</p>
+          </div>
+        </header>
 
-      <form id="login-form" autocomplete="off" novalidate>
-        <div class="field">
-          <input id="username" name="username" type="text" placeholder="operator" aria-label="Username" required />
-          <span class="ico" aria-hidden="true">◉</span>
-        </div>
-        <div class="field">
-          <input id="password" name="password" type="password" placeholder="passphrase" aria-label="Passphrase" required />
-          <span class="ico" aria-hidden="true">⌘</span>
-        </div>
-        <button class="btn" id="submit" type="submit">Enter the gate</button>
-        <div class="status" id="status" role="status" aria-live="polite"></div>
-      </form>
+        <form id="login-form" autocomplete="off" novalidate>
+          <div class="field">
+            <input id="username" name="username" type="text" placeholder="operador" aria-label="Usuário" required />
+            <span class="ico" aria-hidden="true">◉</span>
+            <i class="under" aria-hidden="true"></i>
+          </div>
+          <div class="field">
+            <input id="password" name="password" type="password" placeholder="senha" aria-label="Senha" required />
+            <span class="ico" aria-hidden="true">⌘</span>
+            <i class="under" aria-hidden="true"></i>
+          </div>
+          <button class="btn" id="submit" type="submit"><span>Entrar no portão</span></button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </form>
 
-      <p class="hint">
-        Demo access &middot; <code>shomer</code> / <code>emet-2026</code><br />
-        With no backend reachable, the console drops to a self-contained demo that
-        runs the same rules in the browser.
-      </p>
+        <p class="hint">
+          Acesso de demonstração &middot; <code>shomer</code> / <code>emet-2026</code><br />
+          Sem backend acessível, o console abre em modo offline rodando as mesmas
+          regras no navegador.
+        </p>
 
-      <footer class="login-foot">
-        <span>v0.1.0 · deterministic baseline</span>
-        <span class="he" title="emet, truth">✡︎ אֱמֶת</span>
-      </footer>
+        <footer class="login-foot">
+          <span>v0.1.0 · baseline determinístico</span>
+          <span class="he" title="emet, verdade">✡︎ אֱמֶת</span>
+        </footer>
+      </section>
     </section>
   </main>
 

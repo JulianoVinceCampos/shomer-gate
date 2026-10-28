@@ -423,3 +423,165 @@ textarea#prompt:focus { outline: none; border-color: var(--accent); box-shadow: 
 /* thin scrollbar */
 .ledger::-webkit-scrollbar { width: 8px; }
 .ledger::-webkit-scrollbar-thumb { background: var(--stroke-strong); border-radius: 8px; }
+
+/* ============================================================= login FX ==
+   Flashy, animated login. Zero dependencies: every effect is CSS or the
+   vanilla canvas. These rules come last so they extend the base login above.
+   A single media query disables all of it for prefers-reduced-motion. */
+
+:root { --violet: #7c5cff; }
+
+.login-body { overflow: hidden; }
+
+/* layered animated backdrop */
+.fx { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+.fx > * { position: absolute; inset: 0; }
+
+body.login-body {
+  background:
+    radial-gradient(1200px 700px at 78% -10%, rgba(56, 189, 248, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 10% 110%, rgba(46, 230, 198, 0.09), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+
+#neural { background: transparent; }
+
+.aurora {
+  background:
+    radial-gradient(42% 52% at 20% 30%, rgba(46, 230, 198, 0.22), transparent 60%),
+    radial-gradient(46% 56% at 80% 22%, rgba(56, 189, 248, 0.20), transparent 60%),
+    radial-gradient(52% 52% at 62% 92%, rgba(124, 92, 255, 0.18), transparent 60%),
+    radial-gradient(40% 42% at 8% 82%, rgba(46, 230, 198, 0.14), transparent 60%);
+  filter: blur(34px) saturate(135%);
+  animation: auroraShift 20s ease-in-out infinite alternate;
+}
+@keyframes auroraShift {
+  0% { transform: translate3d(-4%, -2%, 0) scale(1.05) rotate(0deg); }
+  50% { transform: translate3d(3%, 2%, 0) scale(1.12) rotate(2deg); }
+  100% { transform: translate3d(2%, -3%, 0) scale(1.08) rotate(-2deg); }
+}
+
+.grid {
+  background-image:
+    linear-gradient(rgba(120, 160, 210, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 160, 210, 0.08) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 62% at 50% 42%, #000 28%, transparent 76%);
+  mask-image: radial-gradient(ellipse 72% 62% at 50% 42%, #000 28%, transparent 76%);
+  animation: gridPan 24s linear infinite;
+  opacity: 0.6;
+}
+@keyframes gridPan { from { background-position: 0 0; } to { background-position: 46px 46px; } }
+
+.vignette {
+  pointer-events: none;
+  box-shadow: inset 0 0 220px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* glowing rotating border around the card */
+.card-shell {
+  position: relative;
+  width: min(430px, 100%);
+  border-radius: 24px;
+  isolation: isolate;
+}
+.card-shell::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 26px;
+  z-index: 0;
+  background: conic-gradient(from 0deg,
+    transparent 0 18%, var(--accent) 32%, var(--accent-2) 48%,
+    var(--violet) 60%, transparent 78% 100%);
+  filter: blur(7px);
+  opacity: 0.85;
+  animation: borderSpin 7s linear infinite;
+}
+@keyframes borderSpin { to { transform: rotate(1turn); } }
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  animation: cardIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(7px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* scanline sweeping over the card */
+.scan { position: absolute; inset: 0; border-radius: 24px; overflow: hidden; pointer-events: none; z-index: 3; }
+.scan::before {
+  content: "";
+  position: absolute; left: 0; right: 0; height: 36%; top: -40%;
+  background: linear-gradient(180deg, transparent, rgba(46, 230, 198, 0.12), transparent);
+  animation: scanSweep 5s ease-in-out infinite;
+}
+@keyframes scanSweep { 0% { top: -40%; } 62% { top: 112%; } 100% { top: 112%; } }
+
+/* staggered entrance for the inner elements */
+.brand { animation: fieldIn 0.6s both 0.10s; }
+.login-card form .field:nth-of-type(1) { animation: fieldIn 0.6s both 0.20s; }
+.login-card form .field:nth-of-type(2) { animation: fieldIn 0.6s both 0.30s; }
+.hint { animation: fieldIn 0.6s both 0.52s; }
+@keyframes fieldIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* pulsing sigil with a soft float */
+.sigil { animation: sigilPulse 3.4s ease-in-out infinite; }
+.sigil span { display: block; animation: sigilSpin 12s ease-in-out infinite; }
+@keyframes sigilPulse {
+  0%, 100% { box-shadow: 0 0 24px var(--accent-glow); transform: translateY(0); }
+  50% { box-shadow: 0 0 46px var(--accent-glow), 0 0 14px rgba(124, 92, 255, 0.5); transform: translateY(-3px); }
+}
+@keyframes sigilSpin { 0%, 72%, 100% { transform: rotateY(0deg); } 86% { transform: rotateY(360deg); } }
+
+/* animated gradient wordmark */
+.brand h1 .grad {
+  background: linear-gradient(90deg, #e6eefb, var(--accent), var(--accent-2), var(--violet), #e6eefb);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: titleGrad 6s linear infinite;
+}
+@keyframes titleGrad { to { background-position: 300% 0; } }
+
+/* field focus glow + animated underline */
+.field input:focus {
+  box-shadow: 0 0 0 3px var(--accent-glow), 0 0 26px -6px var(--accent-glow);
+}
+.field .under {
+  position: absolute; left: 10%; right: 10%; bottom: 0; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+  transform: scaleX(0); transform-origin: center; opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.field input:focus ~ .under { transform: scaleX(1); opacity: 1; }
+
+/* flowing gradient button with a shimmer sweep */
+.btn {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(135deg, var(--accent), var(--accent-2), var(--violet), var(--accent));
+  background-size: 220% 100%;
+  animation: btnFlow 6s ease infinite, fieldIn 0.6s both 0.42s;
+}
+@keyframes btnFlow { 0%, 100% { background-position: 0 0; } 50% { background-position: 100% 0; } }
+.btn > span { position: relative; z-index: 2; }
+.btn::after {
+  content: ""; position: absolute; top: 0; left: -60%; width: 42%; height: 100%; z-index: 1;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-18deg);
+  animation: shimmer 3.6s ease-in-out infinite;
+}
+@keyframes shimmer { 0% { left: -60%; } 55% { left: 135%; } 100% { left: 135%; } }
+.btn:hover { box-shadow: 0 14px 40px -10px var(--accent-glow), 0 0 0 1px rgba(255, 255, 255, 0.08) inset; }
+
+/* respect reduced motion: kill every animation above */
+@media (prefers-reduced-motion: reduce) {
+  .aurora, .grid, .card-shell::before, .login-card, .scan::before, .brand,
+  .login-card form .field, .hint, .sigil, .sigil span, .brand h1 .grad,
+  .btn, .btn::after { animation: none !important; }
+  .brand h1 .grad { color: var(--accent); }
+}
