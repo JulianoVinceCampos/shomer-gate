@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>shomer-gate · console</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232ee6c6'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle' fill='%2304121a' font-family='monospace'%3E%D7%A9%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="neural"></canvas>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="sigil" aria-hidden="true">ש</div>
+      <h1>shomer-gate <small>guardrail console</small></h1>
+      <span class="mode-tag" id="mode-tag">&hellip;</span>
+      <div class="spacer"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="dot allow"></i>allow</span>
+        <span><i class="dot review"></i>review</span>
+        <span><i class="dot block"></i>block</span>
+      </div>
+      <span class="chip" id="integrity" title="Ledger integrity">
+        <i class="pulse"></i><span id="integrity-text">ledger &hellip;</span>
+      </span>
+      <button class="ghost" id="logout">Sign out</button>
+    </header>
+
+    <main class="grid">
+      <section class="col">
+        <div class="panel">
+          <h2>Scenario editor <span class="n">prompt &rarr; verdict</span></h2>
+          <div class="body">
+            <textarea id="prompt" spellcheck="false" placeholder="Paste or type a prompt. The deterministic baseline judges it; nothing is sent to a model."></textarea>
+            <div class="samples" id="samples"></div>
+            <div class="row">
+              <button class="btn sm" id="evaluate">Evaluate</button>
+              <button class="ghost" id="clear">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Verdict <span class="n">with evidence</span></h2>
+          <div class="body">
+            <div class="verdict empty" id="verdict">Evaluate a prompt to see the verdict, the score and the exact rules that fired.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="col">
+        <div class="panel">
+          <h2>Baseline measurement <span class="n">vs. planted ground truth</span></h2>
+          <div class="body" id="metrics">
+            <div class="empty-note">loading measurement&hellip;</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Decision ledger <span class="n">HMAC-chained, tamper-evident</span></h2>
+          <div class="body">
+            <div class="row" style="margin-bottom:14px">
+              <button class="ghost" id="verify">Verify chain</button>
+              <span id="verify-result" style="font-family:var(--mono);font-size:12px;color:var(--muted)"></span>
+            </div>
+            <div class="ledger" id="ledger">
+              <div class="empty-note">no decisions recorded yet</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/neural-bg.js"></script>
+  <script src="assets/js/guardrail.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

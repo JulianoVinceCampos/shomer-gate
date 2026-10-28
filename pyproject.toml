@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shomer-gate"
+version = "0.1.0"
+description = "Guardrail gateway for LLM traffic: a deterministic baseline decides, the model is measured against it, and every verdict is written to a tamper-evident ledger."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Juliano Vince de Campos" }]
+keywords = ["llm", "guardrail", "prompt-injection", "ai-security", "llmops", "devsecops"]
+
+# The API extra is optional on purpose. The engine imports with zero deps.
+[project.optional-dependencies]
+api = ["fastapi==0.115.6", "uvicorn[standard]==0.34.0"]
+dev = ["pytest==8.3.4", "pytest-cov==6.0.0", "httpx==0.28.1", "ruff==0.8.6", "mypy==1.14.1"]
+
+[project.scripts]
+shomer = "shomer_gate.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=shomer_gate --cov-report=term-missing --cov-fail-under=85"
+pythonpath = ["src"]
+
+[tool.coverage.run]
+branch = true
+source = ["shomer_gate"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "C4"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+files = ["src"]

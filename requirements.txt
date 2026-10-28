@@ -1,0 +1,5 @@
+# Runtime: the API layer only. The engine (guardrail, ledger, metrics) is pure
+# stdlib and has ZERO runtime dependencies. That is the point, and the tests
+# prove it by importing the engine without any of the below installed.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0

@@ -1,0 +1,23 @@
+# One command to the running console: `docker compose up`.
+# Open http://localhost:8080 and sign in with shomer / emet-2026.
+services:
+  shomer-gate:
+    build: .
+    image: shomer-gate:0.1.0
+    container_name: shomer-gate
+    ports:
+      - "8080:8080"
+    environment:
+      # In a real deployment this key comes from a vault, not from here. The
+      # demo leaves it unset so the app mints an ephemeral per-process key.
+      SHOMER_SIGNING_KEY: ${SHOMER_SIGNING_KEY:-}
+      SHOMER_ADMIN_USER: ${SHOMER_ADMIN_USER:-shomer}
+      SHOMER_ADMIN_PASSWORD: ${SHOMER_ADMIN_PASSWORD:-emet-2026}
+      SHOMER_BLOCK_THRESHOLD: "7.0"
+      SHOMER_REVIEW_THRESHOLD: "3.0"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped

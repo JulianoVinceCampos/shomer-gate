@@ -1,0 +1,36 @@
+name: codeql
+
+# CodeQL is a blocking check: a new alert fails the run. Kept in its own file so
+# the security tab wires up cleanly and the schedule catches drift between PRs.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "27 4 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: analyze ${{ matrix.language }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["python", "javascript"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: initialise CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended
+      - name: autobuild
+        uses: github/codeql-action/autobuild@v3
+      - name: analyze
+        uses: github/codeql-action/analyze@v3
