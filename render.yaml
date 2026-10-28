@@ -1,0 +1,22 @@
+# Blueprint de deploy. O Render le este arquivo e cria o servico sozinho.
+#
+# A porta nao aparece aqui de proposito: a plataforma injeta PORT e o app le
+# PORT do ambiente. Um numero fixo aqui seria uma segunda fonte de verdade.
+services:
+  - type: web
+    name: shomer-gate
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: SHOMER_ADMIN_USER
+        value: shomer
+      # sync: false mantem o valor fora do repositorio. Define-se no painel.
+      # Sem definir, o default do codigo continua sendo shomer / emet-2026.
+      - key: SHOMER_ADMIN_PASSWORD
+        sync: false
+      # O Render gera um segredo forte e estavel para assinar JWT e selar o ledger.
+      - key: SHOMER_SIGNING_KEY
+        generateValue: true

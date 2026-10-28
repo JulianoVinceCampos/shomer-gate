@@ -68,7 +68,9 @@ class Settings:
             block_threshold=float(_get("SHOMER_BLOCK_THRESHOLD", "7.0")),
             review_threshold=float(_get("SHOMER_REVIEW_THRESHOLD", "3.0")),
             host=_get("SHOMER_HOST", "0.0.0.0"),
-            port=int(_get("SHOMER_PORT", "8080")),
+            # PORT is injected by most PaaS (Render, Heroku). It wins over the
+            # project default so the same image runs locally and in the cloud.
+            port=int(os.environ.get("PORT") or _get("SHOMER_PORT", "8080")),
             ledger_path=Path(_get("SHOMER_LEDGER_PATH", str(_DEFAULT_LEDGER))),
             ground_truth_path=Path(_get("SHOMER_GROUND_TRUTH", str(_DEFAULT_GROUND_TRUTH))),
         )

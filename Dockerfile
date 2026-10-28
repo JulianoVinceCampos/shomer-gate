@@ -22,7 +22,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     SHOMER_HOST=0.0.0.0 \
-    SHOMER_PORT=8080
+    PORT=8080
 
 RUN useradd --create-home --uid 10001 shomer
 WORKDIR /app
@@ -40,9 +40,11 @@ COPY data/ground_truth.json ./data/ground_truth.json
 USER shomer
 EXPOSE 8080
 
-# Liveness: the health route also reports ledger integrity.
+# Liveness: the health route also reports ledger integrity. Reads $PORT so it
+# stays correct when a platform injects a different port.
 HEALTHCHECK --interval=30s --timeout=4s --start-period=5s --retries=3 \
-  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/api/health').status==200 else 1)"
+  CMD python -c "import os,urllib.request,sys; p=os.environ.get('PORT','8080'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{p}/api/health').status==200 else 1)"
 
-# uvicorn serves the API and the static console from the same origin.
-CMD ["python", "-m", "uvicorn", "shomer_gate.api.app:app", "--host", "0.0.0.0", "--port", "8080"]
+# uvicorn serves the API and the static console from the same origin. Shell form
+# so ${PORT} expands: the platform injects it, the default covers local runs.
+CMD ["sh", "-c", "python -m uvicorn shomer_gate.api.app:app --host 0.0.0.0 --port ${PORT:-8080}"]
