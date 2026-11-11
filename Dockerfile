@@ -5,7 +5,7 @@
 # cloud account" is the whole promise, so the image has to honour it.
 
 # ---- build ------------------------------------------------------------------
-FROM python:3.12-slim AS build
+FROM python:3.15-slim AS build
 WORKDIR /build
 
 COPY pyproject.toml requirements.txt ./
@@ -15,7 +15,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip build \
  && python -m build --wheel --outdir /dist
 
 # ---- runtime ----------------------------------------------------------------
-FROM python:3.12-slim AS runtime
+FROM python:3.15-slim AS runtime
 
 # No pyc, unbuffered logs, no pip cache.
 ENV PYTHONDONTWRITEBYTECODE=1 \
